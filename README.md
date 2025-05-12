@@ -24,5 +24,24 @@
 - font-end
   - abc 
 - backend
-  - abc 
+  - abc
+## Demo
+- Giao diện đăng nhập
+
+![image](https://github.com/user-attachments/assets/05ca040e-1806-436d-8b28-bdc3edf3f977)
+
+
+- Giao diện màn hình chính
+- 
+- Giao diện danh sách bạn bè
+- Giao diện danh sách tìm kiếm bạn bè
+
+![image](https://github.com/user-attachments/assets/c1f05668-8c90-494e-9549-2a6d316d1e21)
+
+- Giao diện yêu cầu kết bạn
+
+![image](https://github.com/user-attachments/assets/d5af71e6-f9dc-49d3-9837-ef4dd83f5657)
+
+- àd
+- dfsdf
 
