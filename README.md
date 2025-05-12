@@ -54,5 +54,12 @@
 
 ![image](https://github.com/user-attachments/assets/47536af8-c51e-4134-bc1f-a068a948a6ef)
 
-- dfsdf
+- Thông tin người dùng
+
+![image](https://github.com/user-attachments/assets/1802e643-0542-4592-a11c-1c77a05a936f)
+
+- Cập nhật thông tin người dùng
+
+![image](https://github.com/user-attachments/assets/92ab32bd-b130-4bdf-b175-68b17044d1c7)
+
 
