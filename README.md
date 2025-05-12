@@ -30,18 +30,29 @@
 
 ![image](https://github.com/user-attachments/assets/05ca040e-1806-436d-8b28-bdc3edf3f977)
 
-
 - Giao diện màn hình chính
-- 
+
+![image](https://github.com/user-attachments/assets/4cf5a26f-b651-48e4-975b-ec072a7e2510)
+
 - Giao diện danh sách bạn bè
+
+![image](https://github.com/user-attachments/assets/ae4d7bc9-b68e-4efc-a872-1db8251db33a)
+
 - Giao diện danh sách tìm kiếm bạn bè
 
-![image](https://github.com/user-attachments/assets/c1f05668-8c90-494e-9549-2a6d316d1e21)
+![image](https://github.com/user-attachments/assets/4df839b8-9cc8-452c-8117-0a206d13a7ac)
 
 - Giao diện yêu cầu kết bạn
 
-![image](https://github.com/user-attachments/assets/d5af71e6-f9dc-49d3-9837-ef4dd83f5657)
+![image](https://github.com/user-attachments/assets/1b84cd45-605f-4416-8674-58aa5036e87a)
 
-- àd
+- Giao diện khi bắt đầu một cuộc trò chuyện mới
+
+![image](https://github.com/user-attachments/assets/ef79504a-7110-45e3-b105-282018206b8e)
+
+- Thông báo khi nhận 1 tin nhắn
+
+![image](https://github.com/user-attachments/assets/47536af8-c51e-4134-bc1f-a068a948a6ef)
+
 - dfsdf
 
