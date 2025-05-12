@@ -10,8 +10,7 @@ class conversation extends Model
     use HasFactory;
     protected $primaryKey = "conversation_id";
     protected $fillable = [
-        'user1_id',
-        'user2_id',
-        'last_message',
+        'name',
+        'late_message',
     ];
 }

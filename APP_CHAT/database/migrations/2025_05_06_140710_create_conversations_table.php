@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('conversations', function (Blueprint $table) {
             $table->increments('conversation_id');
-            $table->string('user1_id');
-            $table->string('user2_id');
-            $table->string('last_message')->nullable();
+            $table->string('name')->nullable();
+            $table->text('late_message')->nullable();
             $table->timestamps();
         });
     }

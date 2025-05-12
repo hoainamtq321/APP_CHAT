@@ -13,20 +13,23 @@ use Illuminate\Support\Facades\DB;
 class ChatController extends Controller
 {
     public function broadcastChat(Request $request){
-        
+
         $request->validate([
             'receiver_id' => 'required|integer',
             'sender_id' => 'required|integer',
+            'conversation_id' => 'required|integer',
             'message' => 'required|string|max:200',
         ]);
-        
+
         $receiver_id = $request->receiver_id;
         $sender_id = $request->sender_id;
-        $message = $request->message;
+        $content = $request->message;
+        $conversation_id = $request->conversation_id;
         
 
         DB::beginTransaction();
         try {
+            /*
             // Kiểm tra đã có cuộc trò chuyện chưa
             $exists = DB::table('conversations')
                     ->where(function($query) use ($receiver_id, $sender_id) {
@@ -38,37 +41,27 @@ class ChatController extends Controller
                             ->where('user2_id', $receiver_id);
                     })
                     ->first();
-                    
-            if($exists)
-            {
+            */
                 $messages = message::create([
-                    'conversation_id' =>  $exists->conversation_id,
+                    'conversation_id' =>  $conversation_id,
                     'sender_id' => $sender_id,
                     'receiver_id' => $receiver_id,
-                    'message' => $message,
-                    'is_read'=> false,
+                    'content' => $content,
                 ]);
 
                 // Cập nhật last_message
                 DB::table('conversations')
-                ->where('conversation_id', $exists->conversation_id)
+                ->where('conversation_id', $conversation_id)
                 ->update([
-                    'last_message' => $message,
+                    'late_message' => $content,
                     'updated_at' => now(),
                 ]);
                 
-            }
-            else
-            {
-                $conversations = conversation::create([
-                    'user1_id' => $sender_id,
-                    'user2_id' => $receiver_id,
-                    'last_message' => ""
-                ]);
-            }
+            
+            
             //Tạo bảng purchase_order
             DB::commit();
-            event(new chat ($sender_id,$message));
+            event(new chat ($messages->conversation_id,$content,$receiver_id));
             return response()->json(['msg'=>'event has been fired']);
 
         } catch (\Exception $e) {
@@ -85,31 +78,35 @@ class ChatController extends Controller
     {
         $currentUserId = Auth::user()->user_id;
 
-        $users = DB::table('conversations')
-            ->where('user1_id', $currentUserId)
-            ->orWhere('user2_id', $currentUserId)
-            ->join('users', function ($join) use ($currentUserId) {
-                $join->on('users.user_id', '=', DB::raw("IF(conversations.user1_id = $currentUserId, conversations.user2_id, conversations.user1_id)"));
+        $friends = DB::table('friend_requests as fr')
+            ->join('users as u', function ($join) use ($currentUserId) {
+                $join->on('fr.sender_id', '=', 'u.user_id')
+                    ->where('fr.receiver_id', '=', $currentUserId)
+                    ->orOn('fr.receiver_id', '=', 'u.user_id')
+                    ->where('fr.sender_id', '=', $currentUserId);
             })
+            ->join('conversations as c', 'fr.conversation_id', '=', 'c.conversation_id')
+            ->where('fr.status', '=', 'accepted')
             ->select(
-                'users.user_id',
-                'users.full_name',
-                'users.img',
-                'conversations.conversation_id',
-                'conversations.last_message',
-                'conversations.updated_at'
+                'u.user_id',
+                'u.full_name',
+                'u.img',
+                'fr.conversation_id',
+                'c.late_message',
+                'c.updated_at',
             )
-            ->orderByDesc('conversations.updated_at') // Sắp xếp theo thời gian mới nhất
             ->get();
-        return view('chat',compact('users'));
+
+        return view('chat',compact('friends'));
     }
 
     public function showMessage(Request $request)
     {
-        $conversation = conversation::find($request->conversation_id);
-        $messages = message::where('conversation_id',$request->conversation_id)->get();
-        if ($conversation) {
-            $messages = \App\Models\Message::where('conversation_id', $conversation->conversation_id)->get();
+        $request->validate([
+            'conversation_id' => 'required|integer|max:50'
+        ]);
+        $messages = message::where('conversation_id',$request->conversation_id)->paginate(10);
+        if ($messages) {
             return response()->json([
                 'success' => true,
                 'messages' => $messages

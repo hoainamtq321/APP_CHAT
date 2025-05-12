@@ -19,8 +19,8 @@ class UserSeeder extends Seeder
     {
         $users = [
             ['username' => 'nam', 'full_name' => 'HoaiNam', 'img' => 'img/nhilangthan.jpg'],
-            ['username' => 'trang', 'full_name' => 'Như Tragn', 'img' => 'img/nhennhen.jpg'],
-            ['username' => 'luyen', 'full_name' => 'Quang luyem', 'img' => 'img/ngokhong.jpg'],
+            ['username' => 'trang', 'full_name' => 'Như Trang', 'img' => 'img/nhennhen.jpg'],
+            ['username' => 'luyen', 'full_name' => 'Quang luyen', 'img' => 'img/ngokhong.jpg'],
             ['username' => 'huan', 'full_name' => 'Minh Huan', 'img' => 'img/natra.jpg'],
         ];
 

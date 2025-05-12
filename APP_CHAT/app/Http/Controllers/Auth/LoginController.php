@@ -33,4 +33,14 @@ class LoginController extends Controller
         return back()->with('msg','Tài khoản hoặc mật khẩu sai!');
         
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout(); // Đăng xuất
+
+        $request->session()->invalidate(); // Hủy session
+        $request->session()->regenerateToken(); // Đặt lại CSRF token
+
+        return redirect('/login'); // Chuyển hướng về trang login
+    }
 }

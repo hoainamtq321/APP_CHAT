@@ -2093,3 +2093,73 @@ h4 {
 .wrapper {
     text-align: center;
 }
+
+/*icon*/
+.icon-badge-group .icon-badge-container {
+    display: inline-block;
+    margin-left:15px;
+}
+
+.icon-badge-group .icon-badge-container:first-child { 
+  margin-left:0;
+}
+
+.icon-badge-container {
+    margin-top:20px;
+    position: absolute;
+    top: 20px;
+    right: 80px;
+    cursor: pointer;
+}
+.icon-badge-container:active{
+    opacity: 0.5;
+}
+.icon-badge-icon {
+    font-size: 30px;
+    position: relative;
+}
+
+.icon-badge {
+    background-color: red;
+    font-size: 12px;
+    color: white;
+    text-align: center;
+    width:20px;
+    height:20px;
+    border-radius: 100%;
+    position: absolute; /* changed */
+    top: -5px; /* changed */
+    left: 18px; /* changed */
+}
+/**/
+.btn-close:active{
+    opacity: 0.5;
+    cursor: pointer;
+}
+.btn-close:hover{
+    cursor: pointer;
+}
+/*Add friend*/
+.panel-heading{
+    position: relative;
+    left: 20px;
+    top: -6px;
+}
+
+.panel-heading i:hover, .btn-add_friend:hover, .btn-accept_friend:hover, .btn-refuse_friend:hover{
+    cursor: pointer;
+}
+
+.panel-heading i:active, .btn-add_friend:active, .btn-accept_friend:active, .btn-refuse_friend:active{
+    opacity: 0.5;
+}
+/*Search friend*/
+
+/* Read */
+.coler-black{
+    color: black !important;
+}
+
+.coler-f5{
+    color: #f5f5f5;
+}

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\FriendController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,4 +37,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat',[ChatController::class,'chat'])->name('chat');
 
     Route::get('/showmessage',[ChatController::class,'showMessage'])->name('showmessage');
+
+    Route::get('/searchFriend',[FriendController::class,'searchFriend'])->name('friend.search');
+    Route::post('/sendRequest',[FriendController::class,'sendRequest'])->name('friend.sendRequest');
+    Route::post('/acceptRequest',[FriendController::class,'acceptRequest'])->name('friend.acceptRequest');
+    Route::post('/refuseRequest',[FriendController::class,'refuseRequest'])->name('friend.refuseRequest');
+    Route::get('/friendRequest',[FriendController::class,'friendRequest'])->name('friend.request');
+
+    Route::get('infomation',[UserController::class,'index'])->name('user');
+    Route::post('updateInfo',[UserController::class,'updateInfo'])->name('user.updateInfo');
+
+    Route::post('logout',[LoginController::class,'logout'])->name('logout');
 });

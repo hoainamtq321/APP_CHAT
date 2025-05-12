@@ -11,7 +11,14 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+    <!--Ngày tháng năm-->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/isToday.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/isYesterday.js"></script>
+
 
 </head>
 <body>
@@ -23,12 +30,19 @@
                     <div class="col-lg-12 col-sm-12">
                         <div class="left_menubx">
                             <div class="frame">
+                                
                                 <div id="sidepanel" class="sidepanel">
                                                                         <div id="profile" data-id="{{Auth::user()->user_id}}">
+                                                                            <div class="icon-badge-container pending-requests">
+                                                                                
+                                                                                <i class="far fa-user icon-badge-icon"></i>
+                                                                                <!--Hiện thị kết bạn gì người dùng có bạn bè gửi lời mời-->
+                                                                                <div class="icon-badge">6</div>
+                                                                            </div>
                                                                             <div class="wrap">
                                                                                 <img id="profile-img" src="{{Auth::user()->img}}" class="online" alt="" />
                                                                                 <p id="profile-fullName">{{Auth::user()->full_name}}</p>
-                                                                                <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
+                                                                                
                                                                                 <div id="status-options">
                                                                                     <ul>
                                                                                         <li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
@@ -50,6 +64,49 @@
                                     <div id="search">
                                         <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
                                         <input type="text" placeholder="Search contacts...">
+                                    </div>
+                                    
+                                    <div id="contacts_new" class="chat_list contacts d-none">
+                                        <div class="panel-heading">
+                                            <i class="fa fa-times btn-close"></i>
+                                        </div>
+                                        <ul>
+                                            <li class="contact">
+                                                <div class="wrap">
+                                                    <img src="http://emilcarlsson.se/assets/rachelzane.png" alt="">
+                                                    <div class="meta">
+                                                        <p class="name">
+                                                            Shoaib 
+                                                            <span class="date">
+                                                                <button class="btn-accept_friend">
+                                                                    <i class="fas fa-check"></i>
+                                                                </button>
+                                                                <button class="btn-refuse_friend">
+                                                                    <i class="fa fa-times"></i>
+                                                                </button>
+                                                            </span>
+                                                        </p>
+                                                        <p class="preview">Muốn kết bạn với bạn!</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="contact">
+                                                <div class="wrap">
+                                                    <img src="http://emilcarlsson.se/assets/rachelzane.png" alt="">
+                                                    <div class="meta">
+                                                        <p class="name">
+                                                            Shoaib 
+                                                            <span class="date">
+                                                                <button class="btn-add_friend">
+                                                                    <i class="bi bi-person-plus-fill"></i>
+                                                                </button>
+                                                            </span>
+                                                        </p>
+                                                        <p class="preview">Gửi lời mời kết bạn để bắt đầu trò chuyện</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                     <div id="contacts" class="chat_list contacts">
                                         <ul>
@@ -75,7 +132,7 @@
                                                 </div>
                                             </li>
                                             -->
-                                            @foreach ($users as $item)
+                                            @foreach ($friends as $item)
                                                 <li class="contact" data-id="{{$item->user_id}}" data-conversation="{{$item->conversation_id}}">
                                                     <div class="wrap">
                                                         <span class="contact-status online"></span>
@@ -95,7 +152,7 @@
                                                                     {{ $updatedAt->format('d/m/Y') }} <!-- Hiển thị ngày tháng năm nếu lâu hơn 3 ngày -->
                                                                 @endif
                                                             </span></p>
-                                                            <p class="preview">{{$item->last_message}}</p>
+                                                            <p class="preview">{{$item->late_message}}</p>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -148,11 +205,14 @@ setTimeout(() => {
     window.Echo.channel('chat').listen('chat',(data)=>{
          // Add message
         let conversation_id = $('#profile-contact').attr('data-conversation');
+        let receiver_id = $('#profile').attr('data-id'); 
         let receiver_img = $('#profile-contact .contact-profile_avatar').attr('src');
-        console.log(data['conversation_id']);
-        console.log(conversation_id);
+        console.log('Nhận socket conversation_id:'+data['conversation_id']);
+        console.log('Trên ứng dụng conversation_id:'+conversation_id);
+        console.log('Người nhận receiver_id:'+receiver_id);
+        console.log('Người nhận socket receiver_id:'+data['receiver_id']);
         
-        if(conversation_id === data['conversation_id'])
+        if(conversation_id == data['conversation_id'] && receiver_id == data['receiver_id'])
         {
             $('.messages ul').append(`
             <li class="replies">
@@ -161,10 +221,23 @@ setTimeout(() => {
                 <span class="msg_time">8:40 AM, Today</span>
             </li>
             `);  
+        }
+        else
+        {
+            if(receiver_id == data['receiver_id'])
+            {
+                let test = $(`#contacts .contact[data-conversation="${data['conversation_id']}"]`);
+                test.addClass('coler-black');
+                test.find('.preview').text(`${data.message}`);
+            }
         } 
 
     })
 }, 500);
+
+document.getElementById('profile-img').addEventListener('click', function() {
+        window.location.href = '{{ route('user') }}';
+});
 </script>
 <script src="js/index.js"></script>
 </body>
